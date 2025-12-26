@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEAM DARK Premium Lab</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>WELCOME TO TEAM DARK PREMIUM LAB</h1>
+        <p>Leader X | Coded by - AMIT</p>
+        <p>Elite Hacking Knowledge Hub | @dark_exploit_</p>
+
+        <div id="password-section">
+            <h2>Enter Password</h2>
+            <input type="password" id="pass-input" placeholder="Password">
+            <button onclick="checkPass()">Enter Lab</button>
+            <p><small>Need password? WhatsApp: +919836942455</small></p>
+        </div>
+
+        <div id="main-menu" class="hidden">
+            <h2>Select Mode</h2>
+            <button onclick="showLearner()">Learner</button>
+            <button onclick="showExpert()">Expert</button>
+        </div>
+
+        <div id="learner-section" class="hidden">
+            <h2>Learner Resources</h2>
+            <div class="topic-list" id="learner-topics"></div>
+        </div>
+
+        <div id="expert-section" class="hidden">
+            <h2>Expert Quizzes</h2>
+            <div class="topic-list" id="expert-topics"></div>
+            <div id="quiz-area" class="hidden"></div>
+        </div>
+
+        <div id="result" class="hidden"></div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script>
+        const PASSWORD = "DARKLAB2026";
+
+        function checkPass() {
+            if (document.getElementById('pass-input').value === PASSWORD) {
+                document.getElementById('password-section').classList.add('hidden');
+                document.getElementById('main-menu').classList.remove('hidden');
+            } else alert("Wrong Password");
+        }
+
+        function hideAll() {
+            document.querySelectorAll('#learner-section, #expert-section, #quiz-area, #result').forEach(el => el.classList.add('hidden'));
+        }
+
+        function showLearner() {
+            hideAll();
+            document.getElementById('learner-section').classList.remove('hidden');
+            const container = document.getElementById('learner-topics');
+            container.innerHTML = '';
+            topics.forEach((topic, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'topic-btn';
+                btn.textContent = topic;
+                btn.onclick = () => window.open(youtubeLinks[i], '_blank');
+                container.appendChild(btn);
+            });
+        }
+
+        function showExpert() {
+            hideAll();
+            document.getElementById('expert-section').classList.remove('hidden');
+            const container = document.getElementById('expert-topics');
+            container.innerHTML = '';
+            topics.forEach((topic, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'topic-btn';
+                btn.textContent = topic;
+                btn.onclick = () => startQuiz(i, topic, false);
+                container.appendChild(btn);
+            });
+            const mastery = document.createElement('div');
+            mastery.className = 'topic-btn mastery';
+            mastery.textContent = 'Mastery Test (30 Questions)';
+            mastery.onclick = () => startQuiz(-1, 'Mastery Test', true);
+            container.appendChild(mastery);
+        }
+
+        let currentQuiz = [], currentIndex = 0, score = 0, timer;
+
+        function startQuiz(topicIndex, title, isMastery) {
+            hideAll();
+            document.getElementById('quiz-area').classList.remove('hidden');
+            document.getElementById('quiz-area').innerHTML = `
+                <h2>${title}</h2>
+                <div id="question"></div>
+                <div id="options"></div>
+                <div id="timer">Time: 30s</div>
+                <button onclick="nextQuestion()">Next</button>
+            `;
+            currentIndex = 0; score = 0;
+            currentQuiz = isMastery ? getMasteryQuestions() : questionsDatabase[topicIndex];
+            showQuestion();
+        }
+
+        function getMasteryQuestions() {
+            let all = [];
+            questionsDatabase.forEach(topic => all = all.concat(topic));
+            for (let i = all.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [all[i], all[j]] = [all[j], all[i]];
+            }
+            return all.slice(0, 30);
+        }
+
+        function showQuestion() {
+            if (currentIndex >= currentQuiz.length) { endQuiz(); return; }
+            const q = currentQuiz[currentIndex];
+            document.getElementById('question').innerHTML = `<p>${currentIndex + 1}. ${q.q}</p>`;
+            const opts = document.getElementById('options');
+            opts.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.textContent = opt;
+                btn.onclick = () => {
+                    if (i === q.ans) score++;
+                    nextQuestion();
+                };
+                opts.appendChild(btn);
+            });
+            startTimer();
+        }
+
+        function startTimer() {
+            let time = 30;
+            clearInterval(timer);
+            document.getElementById('timer').textContent = `Time: ${time}s`;
+            timer = setInterval(() => {
+                time--;
+                document.getElementById('timer').textContent = `Time: ${time}s`;
+                if (time <= 0) nextQuestion();
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            clearInterval(timer);
+            currentIndex++;
+            showQuestion();
+        }
+
+        function endQuiz() {
+            clearInterval(timer);
+            const name = prompt("Enter your name:") || "Hacker";
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.remove('hidden');
+            resultDiv.innerHTML = `
+                <h2>Congratulations ${name}!</h2>
+                <p>Your Score: \( {score}/ \){currentQuiz.length}</p>
+                <p>TEAM DARK appreciates your skills!</p>
+                <p style="color:#f00;"><strong>Take screenshot & send to Admin</strong></p>
+            `;
+            document.getElementById('quiz-area').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
