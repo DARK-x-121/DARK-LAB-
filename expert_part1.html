@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TEAM DARK – Expert Lab</title>
+<style>
+body{background:black;color:#00ff66;font-family:monospace;text-align:center}
+.box{border:2px solid #00ff66;box-shadow:0 0 15px #00ff66;padding:20px;margin:30px auto;width:95%;max-width:550px}
+button{background:black;color:#00ff66;border:2px solid #00ff66;padding:10px;margin:6px;width:95%;cursor:pointer}
+button:hover{box-shadow:0 0 10px #00ff66}
+.hidden{display:none}
+.timer{color:red}
+h1{color:red}
+</style>
+</head>
+
+<body>
+
+<div class="box" id="select">
+<h1>TEAM DARK – EXPERT MODE</h1>
+<button onclick="start('Termux')">Termux Basics</button>
+<button onclick="start('Networking')">Computer Networking</button>
+<button onclick="start('Linux')">Linux Command Line</button>
+</div>
+
+<div class="box hidden" id="quiz">
+<h2 id="topic"></h2>
+<p class="timer">Time: <span id="time">30</span>s</p>
+<p id="question"></p>
+<div id="options"></div>
+</div>
+
+<div class="box hidden" id="result">
+<h2 id="user"></h2>
+<p id="score"></p>
+<p>📸 Screenshot & send to Admin</p>
+</div>
+
+<script>
+const TIME=30;
+let t,i=0,score=0,topicName="",timer;
+
+const Q={
+Termux:[
+["Termux based on?","Linux","Windows","Mac","DOS",0],
+["Update packages?","pkg update","rm -rf","ls","cd",0],
+["Install tool?","pkg install","apt remove","wget","nano",0],
+["Default shell?","bash","zsh","fish","cmd",0],
+["List files?","ls","pwd","whoami","nano",0],
+["Create file?","touch","rm","mv","pwd",0],
+["Remove file?","rm","ls","pwd","cat",0],
+["Current dir?","pwd","ls","cd","tree",0],
+["Exit terminal?","exit","stop","kill","break",0],
+["Root access tool?","tsu","su","sudo","root",0],
+["Package manager?","pkg","yum","pacman","brew",0],
+["Download tool?","wget","ping","ps","top",0],
+["Edit file?","nano","ps","top","kill",0],
+["Clear screen?","clear","cls","reset","exit",0],
+["Check user?","whoami","id","user","name",0]
+],
+
+Networking:[
+["OSI layers?","7","5","4","6",0],
+["TCP is?","Connection-oriented","Stateless","UDP","ICMP",0],
+["UDP is?","Connectionless","Secure","Encrypted","Reliable",0],
+["HTTP port?","80","443","21","22",0],
+["HTTPS port?","443","80","21","25",0],
+["FTP port?","21","22","80","443",0],
+["Ping uses?","ICMP","TCP","UDP","ARP",0],
+["DNS resolves?","Domain to IP","IP to MAC","MAC to IP","Port",0],
+["Private IP?","192.168.x.x","8.8.8.8","1.1.1.1","9.9.9.9",0],
+["MAC works on?","Layer 2","Layer 3","Layer 4","Layer 7",0],
+["Router works on?","Layer 3","Layer 2","Layer 1","Layer 7",0],
+["Subnet mask use?","Network ID","Encryption","Routing","Ports",0],
+["Firewall use?","Filter traffic","Boost speed","Encrypt","Scan virus",0],
+["ARP maps?","IP to MAC","MAC to IP","Port to IP","DNS",0],
+["Loopback IP?","127.0.0.1","192.168.1.1","0.0.0.0","255.255.255.0",0]
+],
+
+Linux:[
+["List files?","ls","pwd","whoami","grep",0],
+["Search text?","grep","cat","ls","pwd",0],
+["Change permission?","chmod","chown","ps","kill",0],
+["Change owner?","chown","chmod","useradd","groupadd",0],
+["Show processes?","ps","top","netstat","kill",0],
+["Kill process?","kill","stop","end","break",0],
+["Current dir?","pwd","ls","tree","cd",0],
+["Move file?","mv","cp","rm","ln",0],
+["Copy file?","cp","mv","rm","cat",0],
+["Pipe symbol?","|","&","$","#",0],
+["Super user?","root","admin","system","guest",0],
+["Manual pages?","man","help","info","doc",0],
+["Disk usage?","df","du","ls","free",0],
+["Memory info?","free","top","ps","df",0],
+["Archive tool?","tar","zip","rar","7z",0]
+]
+};
+
+function start(tp){
+ topicName=tp;i=0;score=0;
+ document.getElementById("select").classList.add("hidden");
+ document.getElementById("quiz").classList.remove("hidden");
+ document.getElementById("topic").innerText=tp;
+ load();
+}
+
+function load(){
+ if(i>=15){end();return;}
+ t=TIME; document.getElementById("time").innerText=t;
+ const q=Q[topicName][i];
+ document.getElementById("question").innerText=(i+1)+". "+q[0];
+ const opt=document.getElementById("options");
+ opt.innerHTML="";
+ for(let j=1;j<=4;j++){
+  let b=document.createElement("button");
+  b.textContent=q[j];
+  b.onclick=()=>ans(j-1);
+  opt.appendChild(b);
+ }
+ timer=setInterval(()=>{
+  t--; document.getElementById("time").innerText=t;
+  if(t<=0){clearInterval(timer);i++;load();}
+ },1000);
+}
+
+function ans(x){
+ clearInterval(timer);
+ if(x===Q[topicName][i][5])score++;
+ i++; load();
+}
+
+function end(){
+ document.getElementById("quiz").classList.add("hidden");
+ document.getElementById("result").classList.remove("hidden");
+ const n=prompt("Enter your name");
+ document.getElementById("user").innerText="Good work, "+n;
+ document.getElementById("score").innerText="Score: "+score+" / 15";
+}
+</script>
+</body>
+</html>
