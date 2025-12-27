@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TEAM DARK – Expert Lab (Part 2)</title>
+<style>
+body{background:black;color:#00ff66;font-family:monospace;text-align:center}
+.box{border:2px solid #00ff66;box-shadow:0 0 15px #00ff66;padding:20px;margin:30px auto;width:95%;max-width:550px}
+button{background:black;color:#00ff66;border:2px solid #00ff66;padding:10px;margin:6px;width:95%;cursor:pointer}
+button:hover{box-shadow:0 0 10px #00ff66}
+.hidden{display:none}
+.timer{color:red}
+h1{color:red}
+</style>
+</head>
+
+<body>
+
+<div class="box" id="select">
+<h1>TEAM DARK – EXPERT MODE</h1>
+<button onclick="start('Programming')">Programming Fundamentals</button>
+<button onclick="start('Web')">Web Technologies</button>
+<button onclick="start('Crypto')">Cryptography Basics</button>
+</div>
+
+<div class="box hidden" id="quiz">
+<h2 id="topic"></h2>
+<p class="timer">Time: <span id="time">30</span>s</p>
+<p id="question"></p>
+<div id="options"></div>
+</div>
+
+<div class="box hidden" id="result">
+<h2 id="user"></h2>
+<p id="score"></p>
+<p>📸 Screenshot & send to Admin</p>
+</div>
+
+<script>
+const TIME=30;
+let t,i=0,score=0,topicName="",timer;
+
+const Q={
+Programming:[
+["Python is?","Interpreted","Compiled","Machine","Binary",0],
+["Loop keyword?","for","if","def","try",0],
+["Function define?","def","func","method","lambda",0],
+["Variable type?","int","loop","print","import",0],
+["List in Python?","[]","{}","()","<>",0],
+["Dictionary uses?","Key-value","Index","Loop","Class",0],
+["Comment symbol?","#","//","/*","--",0],
+["Exception block?","try-except","if-else","for","with",0],
+["Import module?","import","include","require","use",0],
+["Boolean values?","True/False","1/0","Yes/No","On/Off",0],
+["C language is?","Compiled","Interpreted","Script","VM",0],
+["Pointer stores?","Address","Value","String","Array",0],
+["Main function?","main()","start()","run()","init()",0],
+["Memory allocation?","malloc","assign","alloc","mem",0],
+["Header file?","stdio.h","main.c","input.h","core.h",0]
+],
+
+Web:[
+["HTML stands for?","HyperText Markup Language","HighText ML","Hyper Tool","None",0],
+["CSS used for?","Styling","Logic","Database","Server",0],
+["JS runs on?","Browser","Server only","Database","OS",0],
+["HTTP is?","Stateless","Stateful","Encrypted","Binary",0],
+["HTTPS uses?","SSL/TLS","FTP","SMTP","SSH",0],
+["GET method?","Fetch data","Send data","Delete","Update",0],
+["POST method?","Send data","Fetch","Read","Ping",0],
+["Cookie stored in?","Browser","Server","DB","Cache",0],
+["Session stored in?","Server","Browser","DNS","Client",0],
+["Status 200?","OK","Error","Forbidden","Not Found",0],
+["Status 404?","Not Found","OK","Server error","Redirect",0],
+["Header stores?","Metadata","HTML","CSS","JS",0],
+["DOM stands for?","Document Object Model","Data Object","Dynamic Obj","None",0],
+["Same-origin policy?","Security rule","Design","Style","Cache",0],
+["API stands for?","Application Programming Interface","App Proxy","Access Point","None",0]
+],
+
+Crypto:[
+["Encryption means?","Data protection","Compression","Encoding","Hashing",0],
+["Hashing is?","One-way","Two-way","Reversible","Symmetric",0],
+["MD5 is?","Broken hash","Encryption","Cipher","Key",0],
+["SHA-256 is?","Hash","Cipher","Key","Protocol",0],
+["Symmetric uses?","One key","Two keys","No key","Public key",0],
+["Asymmetric uses?","Public/Private keys","One key","No key","Token",0],
+["RSA is?","Asymmetric","Symmetric","Hash","Encoding",0],
+["AES is?","Symmetric","Asymmetric","Hash","Protocol",0],
+["Salt used for?","Hash security","Speed","Size","Key gen",0],
+["Brute force?","Try all keys","Decrypt","Encrypt","Sign",0],
+["SSL/TLS used for?","Secure transport","Storage","Backup","Email",0],
+["Digital signature?","Authenticity","Encryption","Compression","Hash",0],
+["Key length?","Security strength","Speed","Size","Format",0],
+["Rainbow table?","Precomputed hashes","Keys","Cipher","Token",0],
+["Plaintext means?","Original data","Encrypted","Hashed","Compressed",0]
+]
+};
+
+function start(tp){
+ topicName=tp;i=0;score=0;
+ document.getElementById("select").classList.add("hidden");
+ document.getElementById("quiz").classList.remove("hidden");
+ document.getElementById("topic").innerText=tp;
+ load();
+}
+
+function load(){
+ if(i>=15){end();return;}
+ t=TIME; document.getElementById("time").innerText=t;
+ const q=Q[topicName][i];
+ document.getElementById("question").innerText=(i+1)+". "+q[0];
+ const opt=document.getElementById("options");
+ opt.innerHTML="";
+ for(let j=1;j<=4;j++){
+  let b=document.createElement("button");
+  b.textContent=q[j];
+  b.onclick=()=>ans(j-1);
+  opt.appendChild(b);
+ }
+ timer=setInterval(()=>{
+  t--; document.getElementById("time").innerText=t;
+  if(t<=0){clearInterval(timer);i++;load();}
+ },1000);
+}
+
+function ans(x){
+ clearInterval(timer);
+ if(x===Q[topicName][i][5])score++;
+ i++; load();
+}
+
+function end(){
+ document.getElementById("quiz").classList.add("hidden");
+ document.getElementById("result").classList.remove("hidden");
+ const n=prompt("Enter your name");
+ document.getElementById("user").innerText="Good work, "+n;
+ document.getElementById("score").innerText="Score: "+score+" / 15";
+}
+</script>
+
+</body>
+  </html>
