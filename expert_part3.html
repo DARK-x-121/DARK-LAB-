@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TEAM DARK – Expert Lab (Part 3)</title>
+<style>
+body{background:black;color:#00ff66;font-family:monospace;text-align:center}
+.box{border:2px solid #00ff66;box-shadow:0 0 15px #00ff66;padding:20px;margin:30px auto;width:95%;max-width:550px}
+button{background:black;color:#00ff66;border:2px solid #00ff66;padding:10px;margin:6px;width:95%;cursor:pointer}
+button:hover{box-shadow:0 0 10px #00ff66}
+.hidden{display:none}
+.timer{color:red}
+h1{color:red}
+</style>
+</head>
+
+<body>
+
+<div class="box" id="select">
+<h1>TEAM DARK – EXPERT MODE</h1>
+<button onclick="start('OS')">Operating Systems</button>
+<button onclick="start('RE')">Reverse Engineering</button>
+<button onclick="start('Exploit')">Exploit Development</button>
+</div>
+
+<div class="box hidden" id="quiz">
+<h2 id="topic"></h2>
+<p class="timer">Time: <span id="time">30</span>s</p>
+<p id="question"></p>
+<div id="options"></div>
+</div>
+
+<div class="box hidden" id="result">
+<h2 id="user"></h2>
+<p id="score"></p>
+<p>📸 Screenshot & send to Admin</p>
+</div>
+
+<script>
+const TIME=30;
+let t,i=0,score=0,topicName="",timer;
+
+const Q={
+OS:[
+["Kernel is?","Core of OS","GUI","Shell","Driver",0],
+["Process is?","Running program","File","Thread","Service",0],
+["Thread is?","Lightweight process","Heavy process","Kernel","Driver",0],
+["Context switch?","CPU state change","Disk IO","Memory alloc","Boot",0],
+["User mode?","Restricted mode","Full access","Kernel","BIOS",0],
+["Kernel mode?","Full access","Restricted","Guest","Shell",0],
+["Virtual memory?","Uses disk as RAM","CPU cache","Register","Swapless",0],
+["Paging is?","Memory management","Scheduling","IO","Boot",0],
+["Scheduler decides?","CPU time","Disk","RAM","Network",0],
+["Deadlock is?","Infinite wait","Crash","Shutdown","Hangup",0],
+["Semaphore used for?","Sync","Encrypt","Compress","Log",0],
+["System call?","User to kernel","Kernel to user","Driver","BIOS",0],
+["Windows kernel?","NT","Linux","Mach","Unix",0],
+["Linux kernel type?","Monolithic","Micro","Hybrid","Exo",0],
+["Zombie process?","Finished not cleaned","Running","Sleeping","Idle",0]
+],
+
+RE:[
+["Reverse engineering is?","Analyzing binaries","Coding","Debugging","Compiling",0],
+["Ghidra is?","Disassembler","Compiler","Debugger","Shell",0],
+["IDA used for?","Static analysis","Dynamic exec","Packaging","Deploy",0],
+["Assembly language?","Low level","High level","Markup","Script",0],
+["Opcode is?","Instruction code","Variable","Register","Address",0],
+["Debugger example?","gdb","gcc","make","apt",0],
+["Strings tool used for?","Readable text","Encrypt","Pack","Compress",0],
+["PE file is?","Windows binary","Linux binary","Script","Archive",0],
+["ELF file is?","Linux binary","Windows exe","APK","ISO",0],
+["Entry point?","Program start","Exit","Loop","Stack",0],
+["Symbol table?","Function names","Passwords","Keys","Logs",0],
+["Obfuscation means?","Hide logic","Encrypt data","Compile","Zip",0],
+["Dynamic analysis?","Run & observe","Read code","Edit","Compile",0],
+["Static analysis?","Without execution","Live run","Debug","Trace",0],
+["Decompiler does?","ASM to C","C to ASM","Encrypt","Sign",0]
+],
+
+Exploit:[
+["Exploit is?","Code abusing vuln","Virus","Patch","Fix",0],
+["Buffer overflow?","Overwrite memory","Encrypt buffer","Resize","Compress",0],
+["Stack overflow affects?","Return address","Heap","Disk","CPU",0],
+["Shellcode is?","Payload code","Shell script","Binary header","Driver",0],
+["NOP sled used for?","Increase success","Encrypt","Compress","Hide",0],
+["EIP register?","Instruction pointer","Stack","Heap","Flags",0],
+["ASLR is?","Memory randomization","Encryption","Firewall","Sandbox",0],
+["DEP is?","No execute memory","Encrypt","Compress","Debug",0],
+["Heap overflow targets?","Heap memory","Stack","Register","Disk",0],
+["ROP stands for?","Return Oriented Programming","Random OS Proc","Root Only Prog","None",0],
+["Exploit dev needs?","Assembly","HTML","CSS","SQL",0],
+["Fuzzing is?","Sending random input","Encrypt","Patch","Log",0],
+["Crash indicates?","Possible vuln","Secure code","Fix","Update",0],
+["PoC means?","Proof of Concept","Point of Control","Packet of Code","None",0],
+["Privilege escalation?","Gain higher access","Encrypt","Login","Logout",0]
+]
+};
+
+function start(tp){
+ topicName=tp;i=0;score=0;
+ document.getElementById("select").classList.add("hidden");
+ document.getElementById("quiz").classList.remove("hidden");
+ document.getElementById("topic").innerText=tp;
+ load();
+}
+
+function load(){
+ if(i>=15){end();return;}
+ t=TIME; document.getElementById("time").innerText=t;
+ const q=Q[topicName][i];
+ document.getElementById("question").innerText=(i+1)+". "+q[0];
+ const opt=document.getElementById("options"); opt.innerHTML="";
+ for(let j=1;j<=4;j++){
+  let b=document.createElement("button");
+  b.textContent=q[j];
+  b.onclick=()=>ans(j-1);
+  opt.appendChild(b);
+ }
+ timer=setInterval(()=>{
+  t--; document.getElementById("time").innerText=t;
+  if(t<=0){clearInterval(timer);i++;load();}
+ },1000);
+}
+
+function ans(x){
+ clearInterval(timer);
+ if(x===Q[topicName][i][5])score++;
+ i++; load();
+}
+
+function end(){
+ document.getElementById("quiz").classList.add("hidden");
+ document.getElementById("result").classList.remove("hidden");
+ const n=prompt("Enter your name");
+ document.getElementById("user").innerText="Well done, "+n;
+ document.getElementById("score").innerText="Score: "+score+" / 15";
+}
+</script>
+</body>
+</html>
