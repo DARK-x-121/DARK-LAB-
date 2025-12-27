@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TEAM DARK – Expert Lab (Part 4)</title>
+<style>
+body{background:black;color:#00ff66;font-family:monospace;text-align:center}
+.box{border:2px solid #00ff66;box-shadow:0 0 15px #00ff66;padding:20px;margin:30px auto;width:95%;max-width:550px}
+button{background:black;color:#00ff66;border:2px solid #00ff66;padding:10px;margin:6px;width:95%;cursor:pointer}
+button:hover{box-shadow:0 0 10px #00ff66}
+.hidden{display:none}
+.timer{color:red}
+h1{color:red}
+</style>
+</head>
+
+<body>
+
+<div class="box" id="select">
+<h1>TEAM DARK – EXPERT MODE</h1>
+<button onclick="start('SQL')">SQL Injection</button>
+<button onclick="start('XSS')">XSS Attacks</button>
+<button onclick="start('Server')">Server-Side Attacks</button>
+</div>
+
+<div class="box hidden" id="quiz">
+<h2 id="topic"></h2>
+<p class="timer">Time: <span id="time">30</span>s</p>
+<p id="question"></p>
+<div id="options"></div>
+</div>
+
+<div class="box hidden" id="result">
+<h2 id="user"></h2>
+<p id="score"></p>
+<p>📸 Screenshot & send to Admin</p>
+</div>
+
+<script>
+const TIME=30;
+let t,i=0,score=0,topicName="",timer;
+
+const Q={
+SQL:[
+["SQL Injection is?","Injecting SQL code","XSS","DoS","Phishing",0],
+["Main target of SQLi?","Database","CPU","RAM","Network",0],
+["' OR 1=1 used for?","Bypass login","Encrypt","Hash","Patch",0],
+["Union based SQLi?","Extract data","Delete files","Crash server","Encrypt DB",0],
+["Error based SQLi?","Uses DB errors","Silent","Blind","Stored",0],
+["Blind SQLi means?","No direct output","Fast attack","GUI","Error shown",0],
+["Prepared statements prevent?","SQLi","XSS","CSRF","LFI",0],
+["Comment operator?","--","//","##","**",0],
+["DB user privilege?","Access level","Password","Port","Table",0],
+["Time-based SQLi uses?","Delay","Crash","Redirect","Encrypt",0],
+["WAF blocks?","Malicious payloads","Users","Ports","DNS",0],
+["MySQL function?","database()","os.system","alert()","print()",0],
+["Dumping DB means?","Extract data","Encrypt","Patch","Backup",0],
+["Parameter tampering affects?","Queries","UI","CSS","JS",0],
+["Best defense?","Input validation","Obfuscation","Encoding","JS",0]
+],
+
+XSS:[
+["XSS stands for?","Cross Site Scripting","Cross Server Script","Extra Secure Shell","None",0],
+["Reflected XSS?","Immediate response","Stored","DOM","Server",0],
+["Stored XSS?","Saved payload","One time","Local","Blind",0],
+["DOM XSS executes?","Client-side","Server","DB","Firewall",0],
+["XSS target?","User browser","Server CPU","Disk","Router",0],
+["alert(1) is?","Test payload","Virus","Patch","Hash",0],
+["Cookie theft via?","document.cookie","SQL","FTP","SSH",0],
+["HttpOnly cookie prevents?","JS access","Login","DB","XSS fully",0],
+["XSS used to?","Steal session","Encrypt DB","Crash OS","Scan ports",0],
+["HTML encoding prevents?","XSS","SQLi","CSRF","RCE",0],
+["Stored XSS dangerous because?","Multiple victims","Slow","Visible","Patched",0],
+["Content-Security-Policy?","Mitigation","Exploit","Payload","Shell",0],
+["Key XSS cause?","Unfiltered input","Strong auth","Firewall","TLS",0],
+["XSS payload example?","<script>","SELECT","chmod","ping",0],
+["Best defense?","Sanitize input","Encrypt DB","Hide source","Minify",0]
+],
+
+Server:[
+["Server-side attack runs on?","Backend","Browser","Client","Router",0],
+["RCE means?","Remote Code Execution","Root Config Error","Random Crash Event","None",0],
+["LFI allows?","Read local files","Upload files","Encrypt","Redirect",0],
+["RFI allows?","Include remote file","Read DB","Scan","Encrypt",0],
+["Command injection uses?","OS commands","SQL","HTML","CSS",0],
+["Target of server attack?","Application logic","UI","CSS","Theme",0],
+["Common payload?","; ls","alert()","SELECT","print()",0],
+["/etc/passwd is?","Linux user file","Log","Config","Binary",0],
+["Webshell gives?","Remote access","UI","CSS","Speed",0],
+["Insecure upload leads to?","Webshell","XSS","CSRF","DoS",0],
+["RCE impact?","Full takeover","Slow site","UI bug","Theme error",0],
+["Least privilege reduces?","Damage","Speed","UI","Logs",0],
+["Hardcoding creds risk?","Server compromise","Fast login","Encryption","Backup",0],
+["SSRF targets?","Internal services","User browser","CSS","JS",0],
+["Main defense?","Proper validation","Minify JS","Hide HTML","Rename files",0]
+]
+};
+
+function start(tp){
+ topicName=tp;i=0;score=0;
+ document.getElementById("select").classList.add("hidden");
+ document.getElementById("quiz").classList.remove("hidden");
+ document.getElementById("topic").innerText=tp;
+ load();
+}
+
+function load(){
+ if(i>=15){end();return;}
+ t=TIME; document.getElementById("time").innerText=t;
+ const q=Q[topicName][i];
+ document.getElementById("question").innerText=(i+1)+". "+q[0];
+ const opt=document.getElementById("options"); opt.innerHTML="";
+ for(let j=1;j<=4;j++){
+  let b=document.createElement("button");
+  b.textContent=q[j];
+  b.onclick=()=>ans(j-1);
+  opt.appendChild(b);
+ }
+ timer=setInterval(()=>{
+  t--; document.getElementById("time").innerText=t;
+  if(t<=0){clearInterval(timer);i++;load();}
+ },1000);
+}
+
+function ans(x){
+ clearInterval(timer);
+ if(x===Q[topicName][i][5])score++;
+ i++; load();
+}
+
+function end(){
+ document.getElementById("quiz").classList.add("hidden");
+ document.getElementById("result").classList.remove("hidden");
+ const n=prompt("Enter your name");
+ document.getElementById("user").innerText="Well done, "+n;
+ document.getElementById("score").innerText="Score: "+score+" / 15";
+}
+</script>
+</body>
+</html>
