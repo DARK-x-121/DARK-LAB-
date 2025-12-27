@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TEAM DARK – MASTERy TEST</title>
+<style>
+body{background:black;color:#00ff66;font-family:monospace;text-align:center}
+.box{border:2px solid #00ff66;box-shadow:0 0 20px #00ff66;padding:20px;margin:30px auto;width:95%;max-width:600px}
+button{background:black;color:#00ff66;border:2px solid #00ff66;padding:10px;margin:6px;width:95%;cursor:pointer}
+button:hover{box-shadow:0 0 10px #00ff66}
+.hidden{display:none}
+.timer{color:red}
+h1{color:red}
+</style>
+</head>
+
+<body>
+
+<div class="box" id="start">
+<h1>TEAM DARK – MASTERy TEST</h1>
+<p>30 Questions • 30 Seconds Each</p>
+<button onclick="begin()">START TEST</button>
+</div>
+
+<div class="box hidden" id="quiz">
+<p class="timer">Time: <span id="time">30</span>s</p>
+<p id="question"></p>
+<div id="options"></div>
+</div>
+
+<div class="box hidden" id="result">
+<h2 id="user"></h2>
+<p id="score"></p>
+<p>🔥 You reached TEAM DARK MASTERy 🔥</p>
+<p>📸 Screenshot & Send to Admin</p>
+</div>
+
+<script>
+const TIME=30;
+let t,i=0,score=0,timer;
+
+const Q=[
+["OSI model has?","7 layers","5","3","10",0],
+["TCP is?","Connection oriented","Stateless","UDP","Raw",0],
+["Linux command to list files?","ls","cd","pwd","rm",0],
+["Kernel runs in?","Ring 0","User mode","Ring 3","BIOS",0],
+["Python used for?","Automation","Design","Gaming only","UI",0],
+["HTTP status 200 means?","OK","Error","Redirect","Denied",0],
+["Hashing example?","SHA256","AES","RSA","TLS",0],
+["Reverse engineering analyzes?","Binaries","UI","CSS","Logs",0],
+["Buffer overflow affects?","Memory","Disk","CPU","Network",0],
+["SQLi targets?","Database","Browser","OS","Router",0],
+["XSS executes on?","Client browser","Server","DB","Firewall",0],
+["RCE gives?","Code execution","Read only","Scan","Encrypt",0],
+["WPA2 uses?","AES","DES","MD5","RC4",0],
+["Phishing targets?","Humans","Firewalls","Servers","CPU",0],
+["OSINT data is?","Public","Private","Encrypted","Hidden",0],
+["Metasploit is?","Exploit framework","AV","Firewall","IDE",0],
+["Meterpreter provides?","Interactive shell","UI","Logs","Patch",0],
+["Burp intercepts?","HTTP traffic","DNS","FTP","SMTP",0],
+["WAF protects?","Web apps","Routers","Clients","CPU",0],
+["IDS purpose?","Detect attacks","Encrypt","Patch","Block",0],
+["Evasion goal?","Bypass detection","Crash","Encrypt","Fix",0],
+["Forensics studies?","Evidence","Exploits","Payloads","Shells",0],
+["Logs are?","Traces","Noise","Useless","Garbage",0],
+["Anti-forensics hides?","Tracks","Payload","Ports","Users",0],
+["Privilege escalation means?","Higher access","Logout","Encrypt","Patch",0],
+["Least privilege reduces?","Impact","Speed","UI","Logs",0],
+["Strong defense?","Layered security","One tool","No logs","Trust",0],
+["Ethical hacking needs?","Permission","Anonymity","Speed","Force",0],
+["Real hacker mindset?","Learn + test","Show off","Destroy","Rush",0],
+["TEAM DARK rule?","Skill > talk","Talk > skill","Luck","Tools",0]
+];
+
+function begin(){
+ document.getElementById("start").classList.add("hidden");
+ document.getElementById("quiz").classList.remove("hidden");
+ load();
+}
+
+function load(){
+ if(i>=30){end();return;}
+ t=TIME; document.getElementById("time").innerText=t;
+ const q=Q[i];
+ document.getElementById("question").innerText=(i+1)+". "+q[0];
+ const opt=document.getElementById("options"); opt.innerHTML="";
+ for(let j=1;j<=4;j++){
+  let b=document.createElement("button");
+  b.textContent=q[j];
+  b.onclick=()=>ans(j-1);
+  opt.appendChild(b);
+ }
+ timer=setInterval(()=>{
+  t--; document.getElementById("time").innerText=t;
+  if(t<=0){clearInterval(timer);i++;load();}
+ },1000);
+}
+
+function ans(x){
+ clearInterval(timer);
+ if(x===Q[i][5])score++;
+ i++; load();
+}
+
+function end(){
+ document.getElementById("quiz").classList.add("hidden");
+ document.getElementById("result").classList.remove("hidden");
+ const n=prompt("Enter your name");
+ document.getElementById("user").innerText="Respect, "+n;
+ document.getElementById("score").innerText="Final Score: "+score+" / 30";
+}
+</script>
+
+</body>
+</html>
