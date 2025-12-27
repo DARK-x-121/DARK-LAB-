@@ -1,167 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEAM DARK Premium Lab</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>TEAM DARK Premium Lab</title>
+<style>
+body{
+    margin:0;
+    background:#000;
+    color:#00ff66;
+    font-family: monospace;
+    text-align:center;
+}
+.box{
+    border:2px solid #00ff66;
+    box-shadow:0 0 20px #00ff66;
+    padding:20px;
+    margin:40px auto;
+    width:90%;
+    max-width:500px;
+}
+button{
+    background:#000;
+    color:#00ff66;
+    border:2px solid #00ff66;
+    padding:10px 20px;
+    margin:10px;
+    cursor:pointer;
+    font-size:16px;
+}
+button:hover{
+    box-shadow:0 0 10px #00ff66;
+}
+input{
+    background:#000;
+    color:#00ff66;
+    border:2px solid #00ff66;
+    padding:10px;
+    width:80%;
+}
+.topic{
+    border:1px solid #00ff66;
+    padding:12px;
+    margin:10px;
+}
+a{
+    color:#00ff66;
+    text-decoration:none;
+}
+.hidden{display:none;}
+h1{color:red;}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>WELCOME TO TEAM DARK PREMIUM LAB</h1>
-        <p>Leader X | Coded by - AMIT</p>
-        <p>Elite Hacking Knowledge Hub | @dark_exploit_</p>
 
-        <div id="password-section">
-            <h2>Enter Password</h2>
-            <input type="password" id="pass-input" placeholder="Password">
-            <button onclick="checkPass()">Enter Lab</button>
-            <p><small>Need password? WhatsApp: +919836942455</small></p>
-        </div>
+<!-- PASSWORD GATE -->
+<div class="box" id="gate">
+<h1>WELCOME TO TEAM DARK PREMIUM LAB</h1>
+<p>Leader X | Coded by - AMIT</p>
+<p>Elite Hacking Knowledge Hub</p>
 
-        <div id="main-menu" class="hidden">
-            <h2>Select Mode</h2>
-            <button onclick="showLearner()">Learner</button>
-            <button onclick="showExpert()">Expert</button>
-        </div>
+<input type="password" id="pass" placeholder="Enter Password"><br><br>
+<button onclick="enterLab()">Enter Lab</button>
 
-        <div id="learner-section" class="hidden">
-            <h2>Learner Resources</h2>
-            <div class="topic-list" id="learner-topics"></div>
-        </div>
+<p style="font-size:12px;">Need password? WhatsApp: +919836942455</p>
+</div>
 
-        <div id="expert-section" class="hidden">
-            <h2>Expert Quizzes</h2>
-            <div class="topic-list" id="expert-topics"></div>
-            <div id="quiz-area" class="hidden"></div>
-        </div>
+<!-- MODE SELECT -->
+<div class="box hidden" id="mode">
+<h2>Select Mode</h2>
+<button onclick="openLearner()">Learner</button>
+<button disabled>Expert (Locked)</button>
+</div>
 
-        <div id="result" class="hidden"></div>
-    </div>
+<!-- LEARNER SECTION -->
+<div class="box hidden" id="learner">
+<h2>Learner Resources</h2>
 
-    <script src="questions.js"></script>
-    <script>
-        const PASSWORD = "DARKLAB2026";
+<div class="topic"><a href="https://www.youtube.com/results?search_query=termux+basics" target="_blank">Termux Basics</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=computer+networking+cyber+security" target="_blank">Computer Networking</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=linux+command+line+mastery" target="_blank">Linux Command Line Mastery</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=operating+system+internals" target="_blank">Operating Systems Deep Dive</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=python+for+cyber+security" target="_blank">Programming Fundamentals</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=web+technologies+security" target="_blank">Web Technologies</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=cryptography+basics+cyber+security" target="_blank">Cryptography Basics</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=reverse+engineering+basics" target="_blank">Reverse Engineering</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=exploit+development+basics" target="_blank">Exploit Development</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=sql+injection+tutorial" target="_blank">SQL Injection & Database Attacks</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=xss+client+side+attacks" target="_blank">XSS & Client-Side Attacks</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=server+side+attacks+cyber+security" target="_blank">Server-Side Attacks</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=wireless+hacking+basics" target="_blank">Wireless Hacking</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=social+engineering+cyber+security" target="_blank">Social Engineering</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=osint+reconnaissance" target="_blank">Recon & OSINT</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=metasploit+framework+tutorial" target="_blank">Metasploit Framework</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=burp+suite+tutorial" target="_blank">Burp Suite</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=firewall+ids+evasion" target="_blank">Firewall & IDS Evasion</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=digital+forensics+basics" target="_blank">Forensics Basics</a></div>
+<div class="topic"><a href="https://www.youtube.com/results?search_query=cyber+law+ethics+hacking" target="_blank">Ethics & Legal Knowledge</a></div>
 
-        function checkPass() {
-            if (document.getElementById('pass-input').value === PASSWORD) {
-                document.getElementById('password-section').classList.add('hidden');
-                document.getElementById('main-menu').classList.remove('hidden');
-            } else alert("Wrong Password");
-        }
+</div>
 
-        function hideAll() {
-            document.querySelectorAll('#learner-section, #expert-section, #quiz-area, #result').forEach(el => el.classList.add('hidden'));
-        }
+<script>
+function enterLab(){
+    if(document.getElementById("pass").value==="DARKLAB2026"){
+        document.getElementById("gate").classList.add("hidden");
+        document.getElementById("mode").classList.remove("hidden");
+    }else{
+        alert("Access Denied");
+    }
+}
+function openLearner(){
+    document.getElementById("mode").classList.add("hidden");
+    document.getElementById("learner").classList.remove("hidden");
+}
+</script>
 
-        function showLearner() {
-            hideAll();
-            document.getElementById('learner-section').classList.remove('hidden');
-            const container = document.getElementById('learner-topics');
-            container.innerHTML = '';
-            topics.forEach((topic, i) => {
-                const btn = document.createElement('div');
-                btn.className = 'topic-btn';
-                btn.textContent = topic;
-                btn.onclick = () => window.open(youtubeLinks[i], '_blank');
-                container.appendChild(btn);
-            });
-        }
-
-        function showExpert() {
-            hideAll();
-            document.getElementById('expert-section').classList.remove('hidden');
-            const container = document.getElementById('expert-topics');
-            container.innerHTML = '';
-            topics.forEach((topic, i) => {
-                const btn = document.createElement('div');
-                btn.className = 'topic-btn';
-                btn.textContent = topic;
-                btn.onclick = () => startQuiz(i, topic, false);
-                container.appendChild(btn);
-            });
-            const mastery = document.createElement('div');
-            mastery.className = 'topic-btn mastery';
-            mastery.textContent = 'Mastery Test (30 Questions)';
-            mastery.onclick = () => startQuiz(-1, 'Mastery Test', true);
-            container.appendChild(mastery);
-        }
-
-        let currentQuiz = [], currentIndex = 0, score = 0, timer;
-
-        function startQuiz(topicIndex, title, isMastery) {
-            hideAll();
-            document.getElementById('quiz-area').classList.remove('hidden');
-            document.getElementById('quiz-area').innerHTML = `
-                <h2>${title}</h2>
-                <div id="question"></div>
-                <div id="options"></div>
-                <div id="timer">Time: 30s</div>
-                <button onclick="nextQuestion()">Next</button>
-            `;
-            currentIndex = 0; score = 0;
-            currentQuiz = isMastery ? getMasteryQuestions() : questionsDatabase[topicIndex];
-            showQuestion();
-        }
-
-        function getMasteryQuestions() {
-            let all = [];
-            questionsDatabase.forEach(topic => all = all.concat(topic));
-            for (let i = all.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [all[i], all[j]] = [all[j], all[i]];
-            }
-            return all.slice(0, 30);
-        }
-
-        function showQuestion() {
-            if (currentIndex >= currentQuiz.length) { endQuiz(); return; }
-            const q = currentQuiz[currentIndex];
-            document.getElementById('question').innerHTML = `<p>${currentIndex + 1}. ${q.q}</p>`;
-            const opts = document.getElementById('options');
-            opts.innerHTML = '';
-            q.options.forEach((opt, i) => {
-                const btn = document.createElement('button');
-                btn.textContent = opt;
-                btn.onclick = () => {
-                    if (i === q.ans) score++;
-                    nextQuestion();
-                };
-                opts.appendChild(btn);
-            });
-            startTimer();
-        }
-
-        function startTimer() {
-            let time = 30;
-            clearInterval(timer);
-            document.getElementById('timer').textContent = `Time: ${time}s`;
-            timer = setInterval(() => {
-                time--;
-                document.getElementById('timer').textContent = `Time: ${time}s`;
-                if (time <= 0) nextQuestion();
-            }, 1000);
-        }
-
-        function nextQuestion() {
-            clearInterval(timer);
-            currentIndex++;
-            showQuestion();
-        }
-
-        function endQuiz() {
-            clearInterval(timer);
-            const name = prompt("Enter your name:") || "Hacker";
-            const resultDiv = document.getElementById('result');
-            resultDiv.classList.remove('hidden');
-            resultDiv.innerHTML = `
-                <h2>Congratulations ${name}!</h2>
-                <p>Your Score: \( {score}/ \){currentQuiz.length}</p>
-                <p>TEAM DARK appreciates your skills!</p>
-                <p style="color:#f00;"><strong>Take screenshot & send to Admin</strong></p>
-            `;
-            document.getElementById('quiz-area').classList.add('hidden');
-        }
-    </script>
 </body>
-</html>
+                       </html>
