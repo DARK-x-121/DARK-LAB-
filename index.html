@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEAM DARK | Premium Cyber Lab</title>
+
+<!-- GOOGLE FONTS -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+/* ================= RESET ================= */
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* ================= BODY ================= */
+body{
+  background:radial-gradient(circle at top,#020202,#000);
+  color:#00ff99;
+  font-family:'Orbitron',monospace;
+  min-height:100vh;
+}
+
+/* ================= COMMON ================= */
+.hidden{display:none}
+.center{text-align:center}
+
+/* ================= LAYOUT ================= */
+.wrapper{
+  max-width:1000px;
+  margin:auto;
+  padding:30px;
+}
+
+/* ================= CARD ================= */
+.card{
+  background:linear-gradient(180deg,#020202,#000);
+  border:2px solid #00ff99;
+  box-shadow:0 0 30px rgba(0,255,153,.4);
+  padding:30px;
+  margin:30px auto;
+  border-radius:12px;
+}
+
+/* ================= HEADINGS ================= */
+h1{
+  color:#ff003c;
+  font-weight:800;
+  letter-spacing:2px;
+}
+h2{color:#00ffaa;margin:15px 0}
+h3{color:#ffaa00;margin-bottom:10px}
+
+/* ================= INPUT ================= */
+input{
+  width:100%;
+  padding:14px;
+  background:#000;
+  color:#00ff99;
+  border:2px solid #00ff99;
+  border-radius:6px;
+  text-align:center;
+  font-size:16px;
+  outline:none;
+}
+
+/* ================= BUTTON ================= */
+button{
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  background:#000;
+  color:#00ff99;
+  border:2px solid #00ff99;
+  border-radius:6px;
+  font-size:16px;
+  cursor:pointer;
+  transition:.3s;
+}
+button:hover{
+  background:#00ff99;
+  color:#000;
+  box-shadow:0 0 20px #00ff99;
+}
+
+/* ================= TIMER ================= */
+.timer{
+  color:#ff003c;
+  font-size:18px;
+  margin:15px 0;
+}
+
+/* ================= FOOTER ================= */
+.footer{
+  margin-top:25px;
+  font-size:12px;
+  opacity:.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<!-- ================= LOGIN ================= -->
+<div class="card center" id="loginBox">
+  <h1>TEAM DARK</h1>
+  <h3>Premium Cybersecurity Lab</h3>
+  <p>Restricted Access • Authorized Members Only</p><br>
+  <input type="password" id="password" placeholder="Enter Access Password">
+  <br><br>
+  <button onclick="checkPassword()">ENTER LAB</button>
+</div>
+
+<!-- ================= MODE SELECTION ================= -->
+<div class="card hidden center" id="modeBox">
+  <h2>Select Mode</h2>
+  <button onclick="openLearner()">Learner Mode</button>
+  <button onclick="openExpert()">Expert Mode</button>
+  <button onclick="startMastery()">🔥 Mastery Test</button>
+</div>
+
+<!-- ================= LEARNER ================= -->
+<div class="card hidden" id="learnerBox">
+  <h2 class="center">Learner Mode</h2>
+  <p class="center">Choose a topic to start learning</p><br>
+  <div id="learnerList"></div>
+  <button onclick="goHome()">⬅ Back</button>
+</div>
+
+<!-- ================= EXPERT ================= -->
+<div class="card hidden" id="expertBox">
+  <h2 class="center">Expert Mode</h2>
+  <p class="center">Choose a topic to test your skills</p><br>
+  <div id="expertList"></div>
+  <button onclick="goHome()">⬅ Back</button>
+</div>
+
+<!-- ================= QUIZ ================= -->
+<div class="card hidden" id="quizBox">
+  <h2 id="quizTitle" class="center"></h2>
+  <div class="timer center">Time Left: <span id="time">30</span>s</div>
+  <h3 id="questionText"></h3>
+  <div id="optionBox"></div>
+</div>
+
+<!-- ================= CERTIFICATE ================= -->
+<div class="card hidden center" id="certificateBox">
+  <h2>🎓 CONGRATULATIONS</h2>
+  <h3 id="certName"></h3>
+  <p id="certScore"></p>
+  <p>
+    You have successfully completed the assessments under  
+    <strong>TEAM DARK – Premium Cyber Lab</strong>
+  </p>
+  <br>
+  <button id="whatsappBtn">📨 Send Confirmation to Admin</button>
+  <div class="footer">
+    © TEAM DARK | Discipline • Knowledge • Power
+  </div>
+</div>
+
+</div>
+
+<script>
+/* ================= ACCESS CONTROL ================= */
+function checkPassword(){
+  const pass=document.getElementById("password").value;
+  if(pass==="DARKLAB2026"){
+    loginBox.classList.add("hidden");
+    modeBox.classList.remove("hidden");
+  }else{
+    alert("ACCESS DENIED");
+  }
+}
+
+/* ================= NAV ================= */
+function goHome(){ location.reload(); }
+
+/* ================= LEARNER TOPICS ================= */
+const learnerTopics=[
+ "Termux Basics","Computer Networking","Linux Command Line",
+ "Operating Systems","Programming Fundamentals","Web Technologies",
+ "Cryptography","Reverse Engineering","Exploit Development",
+ "SQL Injection","XSS","Server-Side Attacks",
+ "Wireless Hacking","Social Engineering","OSINT",
+ "Metasploit","Burp Suite","Firewall Evasion",
+ "Forensics","Cyber Law & Ethics"
+];
+
+function openLearner(){
+  modeBox.classList.add("hidden");
+  learnerBox.classList.remove("hidden");
+  learnerList.innerHTML="";
+  learnerTopics.forEach(t=>{
+    learnerList.innerHTML+=`<button onclick="window.open('https://youtube.com')">${t}</button>`;
+  });
+}
+
+/* ================= PLACEHOLDERS =================
+IMPORTANT:
+- Expert questions (15 per topic)
+- Mastery questions (30 total)
+- Quiz engine
+- Timer logic
+- WhatsApp auto message
+ALL WILL BE ADDED IN NEXT PARTS
+=============================================== */
+
+const expertQuestions={};   // 20 topics × 15 questions
+const masteryQuestions=[];  // 30 mixed questions
+
+let activeSet=[];
+let qIndex=0;
+let score=0;
+let interval;
+
+/* ===== CONTINUES IN PART 2 ===== */
+</script>
+
+</body>
+  </html>
+/* =====================================================
+ QUIZ ENGINE – CORE LOGIC
+===================================================== */
+
+function openExpert(){
+  modeBox.classList.add("hidden");
+  expertBox.classList.remove("hidden");
+  expertList.innerHTML="";
+  Object.keys(expertQuestions).forEach(topic=>{
+    expertList.innerHTML+=`<button onclick="startExpert('${topic}')">${topic}</button>`;
+  });
+}
+
+function startExpert(topic){
+  activeSet = expertQuestions[topic];
+  quizTitle.innerText = topic + " — Expert Test";
+  beginQuiz();
+}
+
+function startMastery(){
+  activeSet = masteryQuestions;
+  quizTitle.innerText = "🔥 Mastery Test";
+  beginQuiz();
+}
+
+function beginQuiz(){
+  modeBox.classList.add("hidden");
+  expertBox.classList.add("hidden");
+  quizBox.classList.remove("hidden");
+  qIndex=0;
+  score=0;
+  loadQuestion();
+}
+
+function loadQuestion(){
+  if(qIndex >= activeSet.length){
+    finishQuiz();
+    return;
+  }
+
+  clearInterval(interval);
+  time.innerText = 30;
+  let t = 30;
+
+  const q = activeSet[qIndex];
+  questionText.innerText = (qIndex+1)+". "+q.q;
+  optionBox.innerHTML="";
+
+  q.o.forEach((opt,i)=>{
+    optionBox.innerHTML += `<button onclick="submitAnswer(${i})">${opt}</button>`;
+  });
+
+  interval = setInterval(()=>{
+    t--;
+    time.innerText = t;
+    if(t<=0){
+      clearInterval(interval);
+      qIndex++;
+      loadQuestion();
+    }
+  },1000);
+}
+
+function submitAnswer(i){
+  clearInterval(interval);
+  if(i === activeSet[qIndex].a) score++;
+  qIndex++;
+  loadQuestion();
+}
+
+function finishQuiz(){
+  quizBox.classList.add("hidden");
+  certificateBox.classList.remove("hidden");
+
+  const name = prompt("Enter your full name");
+  certName.innerText = name;
+  certScore.innerText = `Score: ${score} / ${activeSet.length}`;
+
+  const msg = `Hi sir, my name is ${name}. I have completed the TEAM DARK assessment. My score is ${score}/${activeSet.length}. Thank you TEAM DARK.`;
+  whatsappBtn.onclick = ()=>{
+    window.open(`https://wa.me/919836942455?text=${encodeURIComponent(msg)}`);
+  };
+}
+
+/* =====================================================
+ EXPERT QUESTIONS
+ FORMAT:
+ {
+   q: "Question",
+   o: ["A","B","C","D"],
+   a: correctIndex
+ }
+===================================================== */
+
+/* ===== 1. TERMINAL & LINUX ===== */
+expertQuestions["Linux Command Line"] = [
+{q:"Which command lists files?",o:["ls","cd","pwd","rm"],a:0},
+{q:"Which command changes directory?",o:["ls","cd","mv","cp"],a:1},
+{q:"Which file stores user accounts?",o:["/etc/passwd","/etc/shadow","/bin/bash","/root"],a:0},
+{q:"Which command shows current path?",o:["pwd","path","loc","where"],a:0},
+{q:"Which symbol is root prompt?",o:["$","#","@","%"],a:1},
+{q:"chmod 777 means?",o:["Read only","All permissions","No access","Execute only"],a:1},
+{q:"Which command searches text?",o:["grep","find","locate","search"],a:0},
+{q:"Which command deletes file?",o:["rm","del","erase","remove"],a:0},
+{q:"Which editor is terminal based?",o:["vim","notepad","word","nano++"],a:0},
+{q:"Hidden files start with?",o:[".","_","-","@"],a:0},
+{q:"Which command copies files?",o:["cp","mv","dup","clone"],a:0},
+{q:"Which shows running processes?",o:["ps","ls","topdir","run"],a:0},
+{q:"Which kills a process?",o:["kill","stop","end","exit"],a:0},
+{q:"Which archive tool is common?",o:["tar","zipx","rarx","7z++"],a:0},
+{q:"Who is superuser?",o:["root","admin","user","guest"],a:0}
+];
+
+/* ===== 2. NETWORKING ===== */
+expertQuestions["Computer Networking"] = [
+{q:"TCP is?",o:["Connection-oriented","Stateless","Fast","Unreliable"],a:0},
+{q:"UDP is?",o:["Connectionless","Secure","Slow","Encrypted"],a:0},
+{q:"HTTP port?",o:["80","21","22","443"],a:0},
+{q:"HTTPS port?",o:["443","80","25","110"],a:0},
+{q:"OSI layers?",o:["7","5","6","4"],a:0},
+{q:"IP works at?",o:["Network","Transport","Session","Physical"],a:0},
+{q:"MAC address length?",o:["48-bit","32-bit","64-bit","16-bit"],a:0},
+{q:"Ping uses?",o:["ICMP","TCP","UDP","ARP"],a:0},
+{q:"DNS converts?",o:["Name to IP","IP to MAC","MAC to IP","Port to IP"],a:0},
+{q:"Private IP range?",o:["192.168.x.x","8.8.8.8","1.1.1.1","172.32.x.x"],a:0},
+{q:"Router works at?",o:["Layer 3","Layer 2","Layer 1","Layer 7"],a:0},
+{q:"Switch works at?",o:["Layer 2","Layer 3","Layer 4","Layer 1"],a:0},
+{q:"FTP port?",o:["21","22","80","443"],a:0},
+{q:"SMTP port?",o:["25","110","143","53"],a:0},
+{q:"ARP resolves?",o:["IP to MAC","MAC to IP","DNS","Ports"],a:0}
+];
+
+/* ===== 3. WEB TECHNOLOGIES ===== */
+expertQuestions["Web Technologies"] = [
+{q:"HTML is?",o:["Markup","Programming","Database","OS"],a:0},
+{q:"CSS used for?",o:["Styling","Logic","DB","Server"],a:0},
+{q:"JS runs on?",o:["Browser","Server only","Kernel","BIOS"],a:0},
+{q:"HTTP is?",o:["Stateless","Stateful","Encrypted","Binary"],a:0},
+{q:"Cookie stores?",o:["Client data","Server code","DB","Session key"],a:0},
+{q:"Session stored on?",o:["Server","Client","Browser","ISP"],a:0},
+{q:"GET sends data via?",o:["URL","Body","Header","Cookie"],a:0},
+{q:"POST sends data via?",o:["Body","URL","DNS","Cache"],a:0},
+{q:"Status 404?",o:["Not Found","OK","Forbidden","Error"],a:0},
+{q:"Status 200?",o:["OK","Error","Denied","Timeout"],a:0},
+{q:"HTTPS uses?",o:["TLS","FTP","SSH","SMTP"],a:0},
+{q:"DOM stands for?",o:["Document Object Model","Data Object Map","Dynamic Order Model","None"],a:0},
+{q:"Frontend runs where?",o:["Browser","Server","Kernel","Cloud"],a:0},
+{q:"Backend runs where?",o:["Server","Browser","Client","ISP"],a:0},
+{q:"JS framework?",o:["React","Linux","MySQL","Apache"],a:0}
+];
+
+/* ===== 4. SQL INJECTION ===== */
+expertQuestions["SQL Injection"] = [
+{q:"SQLi attacks?",o:["Database","Network","OS","Memory"],a:0},
+{q:"Classic payload?",o:["' OR 1=1--","<script>","../../","&&"],a:0},
+{q:"SQLi affects?",o:["Confidentiality","Availability","UI","Design"],a:0},
+{q:"Prevent SQLi by?",o:["Prepared statements","MD5","Base64","HTML"],a:0},
+{q:"UNION used to?",o:["Merge queries","Encrypt","Delete","Scan"],a:0},
+{q:"Blind SQLi?",o:["No output","Visual","Fast","Cached"],a:0},
+{q:"Time-based uses?",o:["Delay","Error","Union","Join"],a:0},
+{q:"Error-based SQLi?",o:["DB errors","Time","Boolean","None"],a:0},
+{q:"SQL keyword?",o:["SELECT","FETCH","PULL","TAKE"],a:0},
+{q:"DB example?",o:["MySQL","Linux","Apache","Python"],a:0},
+{q:"DROP means?",o:["Delete","Read","Insert","Encrypt"],a:0},
+{q:"SQLi type?",o:["Boolean","Visual","Stored","XSS"],a:0},
+{q:"OR operator?",o:["Logical","Math","Bit","Shift"],a:0},
+{q:"-- means?",o:["Comment","Operator","String","Function"],a:0},
+{q:"SQLi risk?",o:["Data breach","UI break","Slow site","None"],a:0}
+];
+
+/* ===== 5. XSS ===== */
+expertQuestions["XSS"] = [
+{q:"XSS stands for?",o:["Cross Site Scripting","Cross Script System","Xtreme Script","None"],a:0},
+{q:"XSS runs on?",o:["Client","Server","DB","Kernel"],a:0},
+{q:"Stored XSS?",o:["Saved payload","URL based","Reflected","Blind"],a:0},
+{q:"Reflected XSS?",o:["Immediate","Stored","Delayed","Permanent"],a:0},
+{q:"DOM XSS occurs in?",o:["Browser","Server","DB","Firewall"],a:0},
+{q:"Payload example?",o:["<script>alert(1)</script>","OR 1=1","../../","ping"],a:0},
+{q:"XSS steals?",o:["Cookies","Passwords","IP","Ports"],a:0},
+{q:"Prevent XSS by?",o:["Input sanitization","MD5","TLS","SSH"],a:0},
+{q:"HTML encode?",o:["Escape chars","Encrypt","Hash","Zip"],a:0},
+{q:"JS alert is?",o:["Popup","DB","Network","OS"],a:0},
+{q:"XSS affects?",o:["Users","Server","Router","ISP"],a:0},
+{q:"Cookie flag?",o:["HttpOnly","Root","Admin","Exec"],a:0},
+{q:"Secure cookie?",o:["HTTPS","HTTP","FTP","SMTP"],a:0},
+{q:"XSS type?",o:["DOM","Stored","Reflected","All"],a:3},
+{q:"XSS risk?",o:["Session hijack","Slow site","Crash","None"],a:0}
+];
+
+/* =====================================================
+ MASTERY QUESTIONS WILL START IN PART 3
+===================================================== */
+      /* ===== 6. OPERATING SYSTEMS ===== */
+expertQuestions["Operating Systems"] = [
+{q:"Kernel is?",o:["Core of OS","Shell","GUI","Driver"],a:0},
+{q:"Process is?",o:["Running program","Stored file","Thread","Service"],a:0},
+{q:"Thread is?",o:["Lightweight process","Kernel","CPU","Memory"],a:0},
+{q:"Context switch?",o:["Process change","Login","Logout","Boot"],a:0},
+{q:"Virtual memory uses?",o:["Disk","RAM only","CPU","Cache"],a:0},
+{q:"Paging avoids?",o:["Fragmentation","Deadlock","Starvation","Crash"],a:0},
+{q:"Linux is?",o:["Open-source","Paid","Closed","Trial"],a:0},
+{q:"Windows kernel?",o:["Hybrid","Monolithic","Micro","None"],a:0},
+{q:"System call used for?",o:["Kernel access","UI","Network","DB"],a:0},
+{q:"User mode is?",o:["Restricted","Full access","Kernel","Root"],a:0},
+{q:"Deadlock means?",o:["Infinite wait","Crash","Error","Freeze"],a:0},
+{q:"Semaphore is?",o:["Sync tool","Memory","CPU","Driver"],a:0},
+{q:"Scheduling decides?",o:["CPU time","Disk","RAM","Network"],a:0},
+{q:"Bootloader loads?",o:["Kernel","GUI","App","Driver"],a:0},
+{q:"Multitasking means?",o:["Multiple tasks","Multiple users","Multiple OS","None"],a:0}
+];
+
+/* ===== 7. PROGRAMMING FUNDAMENTALS ===== */
+expertQuestions["Programming Fundamentals"] = [
+{q:"Variable stores?",o:["Data","Code","OS","Network"],a:0},
+{q:"Loop used for?",o:["Repetition","Decision","Exit","Import"],a:0},
+{q:"If-else is?",o:["Conditional","Loop","Function","Class"],a:0},
+{q:"Python is?",o:["Interpreted","Compiled","Binary","Low-level"],a:0},
+{q:"C is?",o:["Compiled","Interpreted","Script","Markup"],a:0},
+{q:"Function is?",o:["Reusable block","Variable","Loop","File"],a:0},
+{q:"Array stores?",o:["Multiple values","One value","Code","OS"],a:0},
+{q:"Index starts at?",o:["0","1","-1","Depends"],a:0},
+{q:"Bug is?",o:["Error","Feature","Tool","Exploit"],a:0},
+{q:"Syntax error?",o:["Grammar issue","Logic","Runtime","Memory"],a:0},
+{q:"Logic error?",o:["Wrong output","Crash","Compile fail","None"],a:0},
+{q:"Runtime error?",o:["During execution","Compile","Design","Syntax"],a:0},
+{q:"IDE is?",o:["Dev tool","OS","Compiler","Browser"],a:0},
+{q:"Algorithm is?",o:["Step process","Code","Loop","Syntax"],a:0},
+{q:"Binary uses?",o:["0 and 1","0-9","A-Z","Hex"],a:0}
+];
+
+/* ===== 8. CRYPTOGRAPHY ===== */
+expertQuestions["Cryptography"] = [
+{q:"Cryptography protects?",o:["Data","UI","CPU","Network"],a:0},
+{q:"Encryption does?",o:["Hide data","Delete","Compress","Hash"],a:0},
+{q:"Decryption does?",o:["Restore data","Delete","Compress","Hash"],a:0},
+{q:"Symmetric uses?",o:["One key","Two keys","No key","Hash"],a:0},
+{q:"Asymmetric uses?",o:["Public/Private key","One key","Password","Token"],a:0},
+{q:"AES is?",o:["Symmetric","Asymmetric","Hash","Encoding"],a:0},
+{q:"RSA is?",o:["Asymmetric","Symmetric","Hash","Encoding"],a:0},
+{q:"Hashing is?",o:["One-way","Two-way","Reversible","Decryptable"],a:0},
+{q:"SHA-256 is?",o:["Hash","Cipher","Protocol","Key"],a:0},
+{q:"MD5 status?",o:["Broken","Secure","Strong","New"],a:0},
+{q:"Salt used for?",o:["Hash strength","Encrypt","Decrypt","Keygen"],a:0},
+{q:"TLS provides?",o:["Secure channel","IP","DNS","FTP"],a:0},
+{q:"Certificate verifies?",o:["Identity","Password","Hash","Port"],a:0},
+{q:"Key length means?",o:["Strength","Speed","Size","Type"],a:0},
+{q:"Brute force attacks?",o:["Try all","Guess once","Scan","Sniff"],a:0}
+];
+
+/* ===== 9. REVERSE ENGINEERING ===== */
+expertQuestions["Reverse Engineering"] = [
+{q:"Reverse engineering means?",o:["Analyze binary","Encrypt","Compile","Execute"],a:0},
+{q:"Ghidra is?",o:["Disassembler","Compiler","OS","Debugger"],a:0},
+{q:"IDA is?",o:["Disassembler","Shell","Kernel","Browser"],a:0},
+{q:"Binary is?",o:["Machine code","Source","Script","Text"],a:0},
+{q:"Decompiler does?",o:["Binary to code","Code to binary","Encrypt","Run"],a:0},
+{q:"Assembly is?",o:["Low-level","High-level","Script","Markup"],a:0},
+{q:"Strings reveal?",o:["Hidden info","Keys","OS","Ports"],a:0},
+{q:"Debugger used for?",o:["Step execution","Encrypt","Compile","Zip"],a:0},
+{q:"PE file is?",o:["Windows binary","Linux file","Mac file","Script"],a:0},
+{q:"ELF file is?",o:["Linux binary","Windows","Mac","Script"],a:0},
+{q:"Static analysis?",o:["No execution","Run code","Exploit","Patch"],a:0},
+{q:"Dynamic analysis?",o:["Run program","Read code","Compile","Hash"],a:0},
+{q:"Opcode is?",o:["Instruction","Variable","Register","Port"],a:0},
+{q:"Memory dump?",o:["RAM data","Disk","CPU","Network"],a:0},
+{q:"Obfuscation hides?",o:["Logic","Data","UI","Network"],a:0}
+];
+
+/* ===== 10. EXPLOIT DEVELOPMENT ===== */
+expertQuestions["Exploit Development"] = [
+{q:"Exploit is?",o:["Abuse bug","Fix bug","Scan","Patch"],a:0},
+{q:"Vulnerability is?",o:["Weakness","Feature","Tool","Firewall"],a:0},
+{q:"Buffer overflow?",o:["Memory overwrite","Disk full","CPU high","Lag"],a:0},
+{q:"Stack overflow occurs when?",o:["Exceed stack","Disk full","CPU high","Heap full"],a:0},
+{q:"Heap overflow affects?",o:["Heap memory","Stack","CPU","Disk"],a:0},
+{q:"Shellcode is?",o:["Payload","Exploit","Patch","Scan"],a:0},
+{q:"NOP sled used for?",o:["Landing","Encrypt","Hash","Debug"],a:0},
+{q:"EIP controls?",o:["Execution flow","Memory","Disk","Network"],a:0},
+{q:"ASLR is?",o:["Memory protection","Exploit","OS","Tool"],a:0},
+{q:"DEP prevents?",o:["Code execution","Login","Network","Disk"],a:0},
+{q:"ROP bypasses?",o:["DEP","Firewall","IDS","AV"],a:0},
+{q:"Exploit goal?",o:["Code execution","UI break","Crash","Lag"],a:0},
+{q:"PoC means?",o:["Proof of Concept","Power of Code","Point of Crash","Patch"],a:0},
+{q:"Payload example?",o:["Reverse shell","Ping","Scan","Hash"],a:0},
+{q:"Exploit chain?",o:["Multiple bugs","Single bug","Scan","Patch"],a:0}
+];
+
+  
