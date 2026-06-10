@@ -116,7 +116,7 @@ No paywalls. No gatekeeping. Just real knowledge.
 | WhatsApp | [+91 98369 42455](https://wa.me/919836942455) |
 | Instagram | [@a.m.it_](https://instagram.com/a.m.it_) |
 | Community | [Join Free](https://chat.whatsapp.com/FvYEb4vUIg89s97ud1A6fW?s=cl&p=a&mlu=1) |
-| Portfolio | [Visit Site](https://dark-x-121.github.io/PORTFOLIO) |
+| Portfolio | [Visit Site](https://dark-x-121.github.io/PORTFOLIO-/) |
 
 ---
 
